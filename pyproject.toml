@@ -1,0 +1,23 @@
+# pyproject.toml
+[project]
+name = "open-polymer-prediction"
+version = "0.1.0"
+dependencies = [
+  "pandas",
+  "numpy==1.26.4",
+  "lightgbm",
+  "rdkit-pypi",
+  "scikit-learn",
+  "matplotlib",
+  "jupyterlab>=4.4.3",
+  "ipykernel>=6.29.5",
+  "seaborn>=0.13.2",
+  "tqdm>=4.67.1",
+  "torch>=2.7.1",
+  "transformers>=4.52.4",
+  "accelerate>=1.8.1",
+  "tiktoken>=0.9.0",
+  "protobuf>=6.31.1",
+  "torch-geometric>=2.6.1",
+]
+
