@@ -50,6 +50,7 @@ jobs:
           echo "Dataset does not exists. Creating..."
 
           kaggle datasets create -p $dataset_dir --dir-mode zip
+        fi
 
         # - name: Generate Notebook with Papermill
         #   run: |
