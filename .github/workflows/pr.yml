@@ -45,7 +45,7 @@ jobs:
 
         if kaggle datasets status $dataset_slug; then
           echo "Dataset exists. Updating..."
-          kaggle datasets version -p $dataset_dir -m "Update for PR ${pr_number}"
+          kaggle datasets version -p $dataset_dir -m "Update for PR ${pr_number}" --dir-mode zip
         else 
           echo "Dataset does not exists. Creating..."
 
