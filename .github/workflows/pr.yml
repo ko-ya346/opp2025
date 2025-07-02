@@ -29,7 +29,7 @@ jobs:
 
     - name: Create Kaggle Dataset src
       run: |
-        pr_number=${{ github.event.number }}
+        pr_number=$(printf "%04d" ${{ github.event.number }})
         dataset_slug="myproject-pr-${pr_number}"
         dataset_dir="dataset-${pr_number}"
         mkdir -p $dataset_dir
@@ -47,13 +47,13 @@ jobs:
 
         # - name: Generate Notebook with Papermill
         #   run: |
-        #     pr_number=${{ github.event.number }}
+        #     pr_number=$(printf "%04d" ${{ github.event.number }})
         #     output_notebook="notebooks/pr_${pr_number}.ipynb"
         #     papermill notebooks/template.ipynb $output_notebook -p dataset_slug "myproject-pr-${pr_number}"
 
     - name: Upload Notebook to Kaggle
       run: |
-        pr_number=${{ github.event.number }}
+        pr_number=$(printf "%04d" ${{ github.event.number }})
         nb_dir="submit_notebook"
 
         cat <<EOF > $nb_dir/kernel-metadata.json
