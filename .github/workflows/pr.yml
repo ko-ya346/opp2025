@@ -1,0 +1,73 @@
+name: PR Dataset and Notebook Upload
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  upload-to-kaggle:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        pip install kaggle papermill
+
+    - name: Configure Kaggle API
+      run: |
+        mkdir -p ~/.kaggle
+        echo "{\"username\":\"${{ secrets.KAGGLE_USERNAME }}\",\"key\":\"${{ secrets.KAGGLE_KEY }}\"}" > ~/.kaggle/kaggle.json
+        chmod 600 ~/.kaggle/kaggle.json
+
+    - name: Create Kaggle Dataset src
+      run: |
+        pr_number=${{ github.event.number }}
+        dataset_slug="opp-2025-pr-${pr_number}"
+        dataset_dir="src"
+
+        cat <<EOF > $dataset_dir/dataset-metadata.json
+        {
+          "title": "opp2025 PR ${pr_number}",
+          "id": "${{ secrets.KAGGLE_USERNAME }}/${dataset_slug}",
+          "licenses": [{"name": "CC0-1.0"}]
+        }
+        EOF
+
+        kaggle datasets create -p $dataset_dir --dir-mode zip
+
+        #    - name: generate notebook with papermill
+        #      run: |
+        #        pr_number=${{ github.event.number }}
+        #        output_notebook="notebooks/pr_${pr_number}.ipynb"
+        #        papermill notebooks/template.ipynb $output_notebook -p dataset_slug "myproject-pr-${pr_number}"
+        #
+        #    - name: upload notebook to kaggle
+        #      run: |
+        #        pr_number=${{ github.event.number }}
+        #        nb_dir="notebook-${pr_number}"
+        #        mkdir -p $nb_dir
+        #        cp notebooks/pr_${pr_number}.ipynb $nb_dir/
+        #
+        #        cat <<eof > $nb_dir/kernel-metadata.json
+        #        {
+        #          "id": "${{ secrets.kaggle_username }}/pr-${pr_number}",
+        #          "title": "pr ${pr_number} submission",
+        #          "code_file": "pr_${pr_number}.ipynb",
+        #          "language": "python",
+        #          "kernel_type": "notebook",
+        #          "is_private": true,
+        #          "enable_gpu": false,
+        #          "enable_internet": false
+        #        }
+        #        eof
+        #
+        #        kaggle kernels push -p $nb_dir
+        #
