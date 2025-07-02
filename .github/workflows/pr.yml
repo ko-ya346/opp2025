@@ -80,7 +80,7 @@ jobs:
             "is_private": true,
             "enable_gpu": false,
             "enable_internet": false,
-            "datasets": [
+            "dataset_sources": [
               "neurips-open-polymer-prediction-2025",
               "koya346/myproject-pr-${pr_number}",
               "senkin13/rdkit-2025-03-03-cp311",
