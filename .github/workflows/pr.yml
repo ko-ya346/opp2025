@@ -32,8 +32,8 @@ jobs:
         pr_number=$(printf "%04d" ${{ github.event.number }})
         dataset_slug="myproject-pr-${pr_number}"
         dataset_dir="dataset-${pr_number}"
-        mkdir -p $dataset_dir
-        cp -r src/* $dataset_dir/
+        cp -r src/ $dataset_dir/
+        ls -R $dataset_dir
 
         cat <<EOF > $dataset_dir/dataset-metadata.json
         {
@@ -45,7 +45,7 @@ jobs:
 
         if kaggle datasets status $dataset_slug; then
           echo "Dataset exists. Updating..."
-          kaggle datasets version -p $dataset_dir -m "Update for PR ${pr_number}"
+          kaggle datasets version -p $dataset_dir -m "Update for PR ${pr_number}" --dir-mode zip
         else 
           echo "Dataset does not exists. Creating..."
 
@@ -72,7 +72,7 @@ jobs:
 
           cat <<EOF > $nb_dir/kernel-metadata.json
           {
-            "id": 
+            "id": "${notebook_id}",
             "title": "PR ${pr_number} Submission",
             "code_file": "submit.ipynb",
             "language": "python",
@@ -88,7 +88,7 @@ jobs:
               "dmitryuarov/smiles-extra-data"
             ]
           }
-          EOF
+        EOF
 
           kaggle kernels push -p $nb_dir
         fi

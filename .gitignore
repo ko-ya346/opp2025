@@ -1,6 +1,7 @@
-data
+data/
+!src/data/
 .venv
-**/.ipynb_checkpoints
-outputs
+**/.ipynb_checkpoints/
+outputs/
 notebook/*
-**/__pycache__
+**/__pycache__/

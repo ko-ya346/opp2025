@@ -178,3 +178,11 @@ kaggle datasets create -p test_upload_dir -- dir-mode zip
 kaggle datasets create -p test_upload_dir
 ```
 
+## 7/3 0:00 ~ 1:40
+- 提出用の github actions 実装
+
+### next action
+- 実際に提出 -> submit までの流れを行ってみる
+- 提出フローのドキュメント生成（chatGPT に投げる）
+- CV - LB の相関確認
+- 外部データ使わずに実験（外部データ使用できなくなる可能性があるので、モデリングで差別化できるようにする）
