@@ -65,7 +65,7 @@ jobs:
 
         cat <<EOF > $nb_dir/kernel-metadata.json
         {
-          "id": "${{ secrets.KAGGLE_USERNAME }}/pr-${pr_number}",
+          "id": "${{ secrets.KAGGLE_USERNAME }}/pr-${pr_number}-submission",
           "title": "PR ${pr_number} Submission",
           "code_file": "submit.ipynb",
           "language": "python",
