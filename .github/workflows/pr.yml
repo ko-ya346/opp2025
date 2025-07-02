@@ -43,7 +43,13 @@ jobs:
         }
         EOF
 
-        kaggle datasets create -p $dataset_dir
+        if kaggle datasets status $dataset_slug; then
+          echo "Dataset exists. Updating..."
+          kaggle datasets version -p $dataset_dir
+        else 
+          echo "Dataset does not exists. Creating..."
+
+          kaggle datasets create -p $dataset_dir --dir-mode zip
 
         # - name: Generate Notebook with Papermill
         #   run: |
