@@ -30,36 +30,38 @@ jobs:
     - name: Create Kaggle Dataset src
       run: |
         pr_number=${{ github.event.number }}
-        dataset_slug="opp-2025-pr-${pr_number}"
-        dataset_dir="src"
+        dataset_slug="myproject-pr-${pr_number}"
+        dataset_dir="dataset-${pr_number}"
+        mkdir -p $dataset_dir
+        cp -r src/* $dataset_dir/
 
         cat <<EOF > $dataset_dir/dataset-metadata.json
         {
-          "title": "opp2025 PR ${pr_number}",
+          "title": "MyProject PR ${pr_number}",
           "id": "${{ secrets.KAGGLE_USERNAME }}/${dataset_slug}",
           "licenses": [{"name": "CC0-1.0"}]
         }
         EOF
 
-        kaggle datasets create -p $dataset_dir --dir-mode zip
+        kaggle datasets create -p $dataset_dir
 
-        #    - name: generate notebook with papermill
+        #    - name: Generate Notebook with Papermill
         #      run: |
         #        pr_number=${{ github.event.number }}
         #        output_notebook="notebooks/pr_${pr_number}.ipynb"
         #        papermill notebooks/template.ipynb $output_notebook -p dataset_slug "myproject-pr-${pr_number}"
         #
-        #    - name: upload notebook to kaggle
+        #    - name: Upload Notebook to Kaggle
         #      run: |
         #        pr_number=${{ github.event.number }}
         #        nb_dir="notebook-${pr_number}"
         #        mkdir -p $nb_dir
         #        cp notebooks/pr_${pr_number}.ipynb $nb_dir/
         #
-        #        cat <<eof > $nb_dir/kernel-metadata.json
+        #        cat <<EOF > $nb_dir/kernel-metadata.json
         #        {
-        #          "id": "${{ secrets.kaggle_username }}/pr-${pr_number}",
-        #          "title": "pr ${pr_number} submission",
+        #          "id": "${{ secrets.KAGGLE_USERNAME }}/pr-${pr_number}",
+        #          "title": "PR ${pr_number} Submission",
         #          "code_file": "pr_${pr_number}.ipynb",
         #          "language": "python",
         #          "kernel_type": "notebook",
@@ -67,7 +69,7 @@ jobs:
         #          "enable_gpu": false,
         #          "enable_internet": false
         #        }
-        #        eof
+        #        EOF
         #
         #        kaggle kernels push -p $nb_dir
         #
