@@ -45,31 +45,29 @@ jobs:
 
         kaggle datasets create -p $dataset_dir
 
-        #    - name: Generate Notebook with Papermill
-        #      run: |
-        #        pr_number=${{ github.event.number }}
-        #        output_notebook="notebooks/pr_${pr_number}.ipynb"
-        #        papermill notebooks/template.ipynb $output_notebook -p dataset_slug "myproject-pr-${pr_number}"
-        #
-        #    - name: Upload Notebook to Kaggle
-        #      run: |
-        #        pr_number=${{ github.event.number }}
-        #        nb_dir="notebook-${pr_number}"
-        #        mkdir -p $nb_dir
-        #        cp notebooks/pr_${pr_number}.ipynb $nb_dir/
-        #
-        #        cat <<EOF > $nb_dir/kernel-metadata.json
-        #        {
-        #          "id": "${{ secrets.KAGGLE_USERNAME }}/pr-${pr_number}",
-        #          "title": "PR ${pr_number} Submission",
-        #          "code_file": "pr_${pr_number}.ipynb",
-        #          "language": "python",
-        #          "kernel_type": "notebook",
-        #          "is_private": true,
-        #          "enable_gpu": false,
-        #          "enable_internet": false
-        #        }
-        #        EOF
-        #
-        #        kaggle kernels push -p $nb_dir
-        #
+        # - name: Generate Notebook with Papermill
+        #   run: |
+        #     pr_number=${{ github.event.number }}
+        #     output_notebook="notebooks/pr_${pr_number}.ipynb"
+        #     papermill notebooks/template.ipynb $output_notebook -p dataset_slug "myproject-pr-${pr_number}"
+
+    - name: Upload Notebook to Kaggle
+      run: |
+        pr_number=${{ github.event.number }}
+        nb_dir="submit_notebook"
+
+        cat <<EOF > $nb_dir/kernel-metadata.json
+        {
+          "id": "${{ secrets.KAGGLE_USERNAME }}/pr-${pr_number}",
+          "title": "PR ${pr_number} Submission",
+          "code_file": "submit.ipynb",
+          "language": "python",
+          "kernel_type": "notebook",
+          "is_private": true,
+          "enable_gpu": false,
+          "enable_internet": false
+        }
+        EOF
+
+        kaggle kernels push -p $nb_dir
+
