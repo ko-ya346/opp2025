@@ -20,5 +20,6 @@ dependencies = [
   "protobuf>=6.31.1",
   "torch-geometric>=2.6.1",
   "openpyxl>=3.1.5",
+  "kaggle>=1.7.4.5",
 ]
 
