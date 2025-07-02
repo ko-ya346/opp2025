@@ -157,3 +157,18 @@
 - GNN モデルの埋め込みと Smiles の特徴量を使って NN
 - GNN モデルの埋め込みを LightGBM の特徴量に使ったほうがよいかもしれないので検討する
 - Discussion よむ
+
+## 7/2 5:30 ~ 9:00
+kaggle dataset をアップロード  
+
+1. kaggle の設定から API 取得（username, secret_key）
+2. upload したい階層に `dataset-metadata.json` を用意
+3. コマンド実行  
+
+```
+# フォルダをアップロードする場合
+kaggle datasets create -p test_upload_dir -- dir-mode zip
+# ファイルをアップロードする場合
+kaggle datasets create -p test_upload_dir
+```
+
