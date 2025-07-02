@@ -63,26 +63,34 @@ jobs:
       run: |
         pr_number=$(printf "%04d" ${{ github.event.number }})
         nb_dir="submit_notebook"
+        notebook_id="${{ secrets.KAGGLE_USERNAME }}/pr-${pr_number}-submission"
 
-        cat <<EOF > $nb_dir/kernel-metadata.json
-        {
-          "id": "${{ secrets.KAGGLE_USERNAME }}/pr-${pr_number}-submission",
-          "title": "PR ${pr_number} Submission",
-          "code_file": "submit.ipynb",
-          "language": "python",
-          "kernel_type": "notebook",
-          "is_private": true,
-          "enable_gpu": false,
-          "enable_internet": false,
-          "datasets": [
-            "neurips-open-polymer-prediction-2025",
-            "koya346/myproject-pr-${pr_number}",
-            "senkin13/rdkit-2025-03-03-cp311",
-            "minatoyukinaxlisa/tc-smiles",
-            "dmitryuarov/smiles-extra-data"
-          ]
-        }
-        EOF
+        if kaggle kernels status ${notebook_id}; then
+          echo "Notebook ${notebook_id} already exists. Skipping push."
+        else
+          echo "Notebook ${notebook_id} does not exists. Pushing..."
 
-        kaggle kernels push -p $nb_dir
+
+          cat <<EOF > $nb_dir/kernel-metadata.json
+          {
+            "id": 
+            "title": "PR ${pr_number} Submission",
+            "code_file": "submit.ipynb",
+            "language": "python",
+            "kernel_type": "notebook",
+            "is_private": true,
+            "enable_gpu": false,
+            "enable_internet": false,
+            "datasets": [
+              "neurips-open-polymer-prediction-2025",
+              "koya346/myproject-pr-${pr_number}",
+              "senkin13/rdkit-2025-03-03-cp311",
+              "minatoyukinaxlisa/tc-smiles",
+              "dmitryuarov/smiles-extra-data"
+            ]
+          }
+          EOF
+
+          kaggle kernels push -p $nb_dir
+        fi
 
