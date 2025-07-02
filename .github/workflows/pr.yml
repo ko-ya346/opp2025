@@ -71,7 +71,14 @@ jobs:
           "kernel_type": "notebook",
           "is_private": true,
           "enable_gpu": false,
-          "enable_internet": false
+          "enable_internet": false,
+          "datasets": [
+            "neurips-open-polymer-prediction-2025",
+            "koya346/myproject-pr-${pr_number}",
+            "senkin13/rdkit-2025-03-03-cp311",
+            "minatoyukinaxlisa/tc-smiles",
+            "dmitryuarov/smiles-extra-data"
+          ]
         }
         EOF
 
