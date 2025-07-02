@@ -34,6 +34,7 @@ jobs:
         dataset_dir="dataset-${pr_number}"
         mkdir -p $dataset_dir
         cp -r src/* $dataset_dir/
+        ls -R $dataset_dir
 
         cat <<EOF > $dataset_dir/dataset-metadata.json
         {
