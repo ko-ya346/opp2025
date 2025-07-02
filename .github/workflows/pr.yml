@@ -72,7 +72,7 @@ jobs:
 
           cat <<EOF > $nb_dir/kernel-metadata.json
           {
-            "id": 
+            "id": "${notebook_id}",
             "title": "PR ${pr_number} Submission",
             "code_file": "submit.ipynb",
             "language": "python",
