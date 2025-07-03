@@ -86,7 +86,7 @@ jobs:
             ],
             "dataset_sources": [
               "koya346/myproject-pr-${pr_number}",
-              "senkin13/rdkit-2025-03-03-cp311",
+              "senkin13/rdkit-2025-3-3-cp311",
               "minatoyukinaxlisa/tc-smiles",
               "dmitryuarov/smiles-extra-data"
             ]
