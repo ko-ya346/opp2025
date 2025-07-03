@@ -32,6 +32,7 @@ jobs:
         pr_number=$(printf "%04d" ${{ github.event.number }})
         dataset_slug="myproject-pr-${pr_number}"
         dataset_dir="dataset-${pr_number}"
+        mkdir -p $dataset_dir
         cp -r src/ $dataset_dir/src
         ls -R $dataset_dir
 
