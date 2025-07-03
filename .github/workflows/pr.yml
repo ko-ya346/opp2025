@@ -74,7 +74,7 @@ jobs:
           {
             "id": "${notebook_id}",
             "title": "PR ${pr_number} Submission",
-            "code_file": "submit.ipynb",
+            "code_file": "pr_${pr_number}.ipynb",
             "language": "python",
             "kernel_type": "notebook",
             "is_private": true,
