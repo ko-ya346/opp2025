@@ -187,8 +187,9 @@ kaggle datasets create -p test_upload_dir
 - CV - LB の相関確認
 - 外部データ使わずに実験（外部データ使用できなくなる可能性があるので、モデリングで差別化できるようにする）
 
-
-
+## 7/3 8:30 ~ 9:30
+- 提出用notebook を作成中 -> `submit_notebook/submit.ipynb`
+- src の import 周りで苦戦中
 
 
 
