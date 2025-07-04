@@ -8,7 +8,13 @@
 # 実験・提出フロー
 1. 実験毎にブランチを切る
 2. 提出したい notebook を `submit_notebook/submit.ipynb` に置く
-3.  
+3. PR 作成
+4. github actions により`src` 配下のスクリプトがデータセット、`submit.ipynb` が kaggle notebook として PR 毎に生成される
+5. web で notebook を開いて submit
+6. スコア良好なら PR をマージ、悪かったら close （変更は破棄されるので src 配下を好き勝手いじれる）
+---
+> 同一 PR で notebook を修正した場合、web で notebook を削除する必要がある
+
 
 
 # アイディアメモ
@@ -19,6 +25,7 @@
 - データ表記法変更 SELFIES
 - 官能基毎評価 → 剛直性、分子間結合、水素結合
 
+---
 # 作業記録
 ## 6/19 9:00 ~ 10:00
 - リポジトリ作成
@@ -187,10 +194,19 @@ kaggle datasets create -p test_upload_dir
 - CV - LB の相関確認
 - 外部データ使わずに実験（外部データ使用できなくなる可能性があるので、モデリングで差別化できるようにする）
 
+## 7/3 8:30 ~ 9:30
+- 提出用notebook を作成中 -> `submit_notebook/submit.ipynb`
+- src の import 周りで苦戦中
 
+## 7/4 8:30 ~ 9:00
+- 提出フローだいたい完成
+  - src/ をそのままデータセット化できなかった。その下の階層が展開されるようだ
+  - kaggle kernels の設定 json で存在しないデータセットを指定した場合、エラーにならず無視される
+  - kaggle notebook で import したデータセットは read only で編集不可
 
-
-
+### next action
+- 外部データセット使わない場合のスコアを lightgbm, GNN, transformer それぞれ再確認
+- W&B でスコア管理
 
 
 

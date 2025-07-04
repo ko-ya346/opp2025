@@ -32,7 +32,7 @@ jobs:
         pr_number=$(printf "%04d" ${{ github.event.number }})
         dataset_slug="myproject-pr-${pr_number}"
         dataset_dir="dataset-${pr_number}"
-        cp -r src/ $dataset_dir/
+        cp -r src $dataset_dir
         ls -R $dataset_dir
 
         cat <<EOF > $dataset_dir/dataset-metadata.json
@@ -52,11 +52,11 @@ jobs:
           kaggle datasets create -p $dataset_dir --dir-mode zip
         fi
 
-        # - name: Generate Notebook with Papermill
-        #   run: |
-        #     pr_number=$(printf "%04d" ${{ github.event.number }})
-        #     output_notebook="notebooks/pr_${pr_number}.ipynb"
-        #     papermill notebooks/template.ipynb $output_notebook -p dataset_slug "myproject-pr-${pr_number}"
+    - name: Generate Notebook with Papermill
+      run: |
+        pr_number=$(printf "%04d" ${{ github.event.number }})
+        output_notebook="submit_notebook/pr_${pr_number}.ipynb"
+        papermill submit_notebook/submit.ipynb $output_notebook -p pr_number ${pr_number} --prepare-only
 
     - name: Upload Notebook to Kaggle
       run: |
@@ -74,16 +74,18 @@ jobs:
           {
             "id": "${notebook_id}",
             "title": "PR ${pr_number} Submission",
-            "code_file": "submit.ipynb",
+            "code_file": "pr_${pr_number}.ipynb",
             "language": "python",
             "kernel_type": "notebook",
             "is_private": true,
             "enable_gpu": false,
             "enable_internet": false,
-            "datasets": [
-              "neurips-open-polymer-prediction-2025",
+            "competition_sources": [
+              "neurips-open-polymer-prediction-2025"
+            ],
+            "dataset_sources": [
               "koya346/myproject-pr-${pr_number}",
-              "senkin13/rdkit-2025-03-03-cp311",
+              "senkin13/rdkit-2025-3-3-cp311",
               "minatoyukinaxlisa/tc-smiles",
               "dmitryuarov/smiles-extra-data"
             ]
