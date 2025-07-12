@@ -88,7 +88,7 @@ jobs:
               "senkin13/rdkit-2025-3-3-cp311",
               "minatoyukinaxlisa/tc-smiles",
               "dmitryuarov/smiles-extra-data",
-              "abdulrahmanqaten/neurips-gnns-solve-deep-learning"
+              "henryjavier/torch-geometric-2-6-1"
             ]
           }
         EOF
