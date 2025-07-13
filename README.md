@@ -231,4 +231,20 @@ kaggle datasets create -p test_upload_dir
   - global pooling の工夫
   - フィンガープリントなどの特徴量を混ぜる
   - GREA とか他のモデルを試す
+- `uv add torch-molecule` 実行したところ python 3.10 以上が必要だった
+- 以下コマンドでインストールと固定化実施
 
+```
+uv python install 3.10
+uv python pin 3.10
+uv add torch-molecule
+```
+
+- exp016 GNN のモデルを torch-molecule に置き換え。学習コード修正中
+
+### next action
+- 学習と推論を分離
+- 推論 notebook 作成
+- github actions でモデルパラメータをデータセットに上げる
+- パラメータ探索用スクリプトを作って寝ている間に探索させる
+- torch-molecule の色々なモデルを試す
