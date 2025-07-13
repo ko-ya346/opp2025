@@ -23,5 +23,7 @@ dependencies = [
   "kaggle>=1.7.4.5",
   "papermill[all]>=2.6.0",
   "torch-molecule>=0.1.3",
+  "jupyterlab-widgets>=3.0.15",
+  "ipywidgets>=8.1.7",
 ]
 
