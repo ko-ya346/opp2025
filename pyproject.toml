@@ -22,5 +22,6 @@ dependencies = [
   "openpyxl>=3.1.5",
   "kaggle>=1.7.4.5",
   "papermill[all]>=2.6.0",
+  "torch-molecule>=0.1.3",
 ]
 
