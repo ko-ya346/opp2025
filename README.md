@@ -209,5 +209,26 @@ kaggle datasets create -p test_upload_dir
 - W&B でスコア管理
 
 
+## 7/12
+- exp014 で GNN 提出
+- CV と LB の乖離が大きい、kfold の分割が良くない可能性があるので scaffold で分子骨格を取り出して GroupKFold した exp015, pr005
 
+### next action
+- ruff で lint, format
+- groupkfold の各グループ傾向把握
+- GREA 調査
+- SGIR 調査 (半教師あり学習)
+- GNN の特徴量追加
+- 繰り返し単位増やしてデータ増やす
+- GNN に分子記述子や指紋の情報を追加
+
+## 7/13
+- groupkfold しても CV と LB の乖離解消せず
+- Tg のエラーの傾向確認... SMILES長さや原子の種類とエラーに明確な相関なし
+- スコア向上のための手法を調査
+  - 原子に対する情報を増やす
+  - 結合に対する情報を増やす
+  - global pooling の工夫
+  - フィンガープリントなどの特徴量を混ぜる
+  - GREA とか他のモデルを試す
 
