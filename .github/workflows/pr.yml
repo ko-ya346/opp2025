@@ -88,7 +88,8 @@ jobs:
               "senkin13/rdkit-2025-3-3-cp311",
               "minatoyukinaxlisa/tc-smiles",
               "dmitryuarov/smiles-extra-data",
-              "henryjavier/torch-geometric-2-6-1"
+              "henryjavier/torch-geometric-2-6-1",
+              "supercontainer/torch-molecole"
             ]
           }
         EOF
