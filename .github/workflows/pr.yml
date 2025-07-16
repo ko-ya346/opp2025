@@ -89,7 +89,7 @@ jobs:
               "minatoyukinaxlisa/tc-smiles",
               "dmitryuarov/smiles-extra-data",
               "henryjavier/torch-geometric-2-6-1",
-              "supercontainer/torch-molecole"
+              "koya346/torch-molecule-src"
             ]
           }
         EOF
