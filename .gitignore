@@ -5,3 +5,4 @@ data/
 outputs/
 notebook/*
 **/__pycache__/
+tmp/
