@@ -259,3 +259,23 @@ uv add torch-molecule
 - torch-molecule の ソースコード読んで使っている特徴量やパラメータをある程度理解した
   - morganfingerprint あとで追加しようと思っていたがすでに使われていた
 - exp017 で epochs を 500 に増やした
+
+## 7/16 8:40 ~ 9:30
+- 学習済モデルを kaggle dataset にアップロードする関数実装
+  - kaggle notebook への import は手動でやります
+- submit.ipynb を学習済モデル使うように変更
+- get_model 関数作った
+- SGIR モデルはマルチタスクできない
+- アンサンブルを chatgpt さんに相談
+
+## 7/16 22:20 ~ 23:30
+- exp018 で gnn, grea, exp019 で sgir を学習できるように整理
+- notebook 実行スクリプト作成 `scripts/run_notebook.sh`
+
+### next action
+- アンサンブル検証
+- lightgbm のコード整理
+- catboost 実装
+- テーブルデータ向け NN 試す
+  - https://zenn.dev/mkj/articles/f7939cb221da14
+- epoch 数をスクリプト側で上書きできるようにする（papermill -> run）
