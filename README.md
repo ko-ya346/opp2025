@@ -259,3 +259,45 @@ uv add torch-molecule
 - torch-molecule の ソースコード読んで使っている特徴量やパラメータをある程度理解した
   - morganfingerprint あとで追加しようと思っていたがすでに使われていた
 - exp017 で epochs を 500 に増やした
+
+## 7/16 8:40 ~ 9:30
+- 学習済モデルを kaggle dataset にアップロードする関数実装
+  - kaggle notebook への import は手動でやります
+- submit.ipynb を学習済モデル使うように変更
+- get_model 関数作った
+- SGIR モデルはマルチタスクできない
+- アンサンブルを chatgpt さんに相談
+
+## 7/16 22:20 ~ 23:30
+- exp018 で gnn, grea, exp019 で sgir を学習できるように整理
+- notebook 実行スクリプト作成 `scripts/run_notebook.sh`
+
+### next action
+- アンサンブル検証
+- lightgbm のコード整理
+- catboost 実装
+- テーブルデータ向け NN 試す
+  - https://zenn.dev/mkj/articles/f7939cb221da14
+- epoch 数をスクリプト側で上書きできるようにする（papermill -> run）
+
+## 7/17 
+- ポリマー末端の * の扱い
+  - C に置き換え、未処理、At で置き換え
+  - タスクによって精度が異なる
+  - 3D モデルで異なる可能性（3D モデルとは？）
+  - https://www.kaggle.com/competitions/neurips-open-polymer-prediction-2025/discussion/589372
+- シミュレーションによるデータ作成はけっこう時間かかる
+  - それで精度上げることはこのコンペの目的に合ってない
+
+
+```
+新しい Kaggler は、なぜデータ漏洩について知っている人がいるのかといつも不思議に思っています。
+それは、彼らがデータをより深く分析しているからです。
+新しい Kaggler はモデリングに重点を置く傾向がありますが、古い Kaggler はそれが DATAsience であって
+MODELscience ではないことを知っています。
+```
+
+- 繰り返し単位を追加することは有効
+  - データ拡張ではなく検証サンプルや追加トレーニング用につかう
+  - 繰り返し単位で増やして拡張し、元の SMILES でグルーピングして最もスコアが高いものを採用する（もしくは平均、中央値など）
+  - https://www.kaggle.com/competitions/neurips-open-polymer-prediction-2025/discussion/589360#3248754
