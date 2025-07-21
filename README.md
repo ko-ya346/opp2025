@@ -301,3 +301,13 @@ MODELscience ではないことを知っています。
   - データ拡張ではなく検証サンプルや追加トレーニング用につかう
   - 繰り返し単位で増やして拡張し、元の SMILES でグルーピングして最もスコアが高いものを採用する（もしくは平均、中央値など）
   - https://www.kaggle.com/competitions/neurips-open-polymer-prediction-2025/discussion/589360#3248754
+- GNN で descriptor 特徴量増やしたい
+  - augument を自作
+  - torch_molecule を pyproject.toml からはずして リポジトリを src 配下に
+  - import エラー発生
+
+### next action
+- notebook エラー回避
+- GNN 特徴量拡張
+- SMILES 正規化
+- アンサンブル提出 exp021
