@@ -1,12 +1,4 @@
-import os
-import sys
-
-is_kaggle_notebook = os.path.exists("/kaggle/input")
-
-if is_kaggle_notebook:
-    sys.path.append("/kaggle/input/torch-molecule-src/torch-molecule")
-
-from torch_molecule import GNNMolecularPredictor, GREAMolecularPredictor, SGIRMolecularPredictor
+from .torch_molecule import GNNMolecularPredictor, GREAMolecularPredictor, SGIRMolecularPredictor
 
 def get_model(model_name: str):
     model_dict = {

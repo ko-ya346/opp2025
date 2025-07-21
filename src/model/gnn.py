@@ -1,9 +1,9 @@
+from rdkit import Chem
 import torch
 import torch.nn.functional as F
 
 from torch_geometric.data import Data, Dataset
 from torch_geometric.nn import GCNConv, global_mean_pool
-from rdkit import Chem
 
 
 ATOM_LIST = ['C', 'O', 'N', 'H', 'F', 'Cl', 'Br', 'I', 'S', 'P', 'UNK']
