@@ -311,3 +311,21 @@ MODELscience ではないことを知っています。
 - GNN 特徴量拡張
 - SMILES 正規化
 - アンサンブル提出 exp021
+
+## 7/21 
+- exp021 アンサンブルのスコア確認 -> 悪くなった
+- exp022 torch_molecule を改造して Descriptors の結果を特徴量に追加
+- SMILES を canonical にして exp018, exp019, exp020 学習しなおし
+
+### next action
+- atom_to_feature_vector に特徴量追加（ハロゲンの index 追加したい）
+- ほかに特徴量追加できないか考える
+- W&B で実験結果管理（score, ターゲット毎の MSE）
+- グラフ特徴量追加
+- PolyBERT の埋め込み特徴量追加
+  - https://www.kaggle.com/code/akihiroorita/rdkit-w-polybert-extra-neurips-lb-0-039#Final-Model-For-Submission
+  - PolyBERT ってなに？
+- networkx 使った特徴量
+
+## 7/22
+- GNN に descriptor の特徴入れたものはスコア上がった

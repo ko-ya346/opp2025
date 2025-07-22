@@ -168,7 +168,7 @@ def bond_feature_vector_to_dict(bond_feature):
 # assert bond_feature_dict['bond_stereo'] == 'STEREOE'
 # assert bond_feature_dict['is_conjugated'] == False
 
-from rdkit.Chem import AllChem
+from rdkit.Chem import AllChem, Descriptors
 
 def getmorganfingerprint(mol):
     return list(AllChem.GetMorganFingerprintAsBitVect(mol, 2, nBits=1024))
@@ -176,3 +176,6 @@ def getmorganfingerprint(mol):
 def getmaccsfingerprint(mol):
     fp = AllChem.GetMACCSKeysFingerprint(mol)
     return [int(b) for b in fp.ToBitString()]
+
+def getdescriptors(mol):
+    return [desc[1](mol) for desc in Descriptors.descList]

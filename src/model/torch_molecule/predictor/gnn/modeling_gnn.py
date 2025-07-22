@@ -142,7 +142,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         """Initialize and validate the model after dataclass initialization."""
         super().__post_init__()
         if self.augmented_feature is not None:
-            valid_augmented_feature = {"morgan", "maccs"}
+            valid_augmented_feature = {"morgan", "maccs", "desc"}
             invalid_fps = set(self.augmented_feature) - valid_augmented_feature
             if invalid_fps:
                 raise ValueError(
