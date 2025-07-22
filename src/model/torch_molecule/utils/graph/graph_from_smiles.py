@@ -1,7 +1,7 @@
 import numpy as np
 from rdkit import Chem
 from rdkit.Chem import Crippen
-from .features import atom_to_feature_vector, bond_to_feature_vector
+from .features import atom_to_feature_vector, bond_to_feature_vector, getdescriptors
 from .features import getmaccsfingerprint, getmorganfingerprint
 from ..generic.pseudo_tasks import PSEUDOTASK
 
@@ -9,7 +9,7 @@ def add_fingerprint_feature(mol, feature_type, get_fingerprint_fn):
     if feature_type is None:
         return None
     fingerprint = get_fingerprint_fn(mol)
-    return np.expand_dims(np.array(fingerprint, dtype="int8"), axis=0)
+    return np.expand_dims(np.array(fingerprint, dtype="float32"), axis=0)
     
 def get_augmented_property(mol, properties):
     if mol is None:
@@ -123,9 +123,15 @@ def graph_from_smiles(smiles_or_mol, properties, augmented_features=None, augmen
             'maccs' if 'maccs' in augmented_features else None,
             getmaccsfingerprint
         )
+        graph["desc"] = add_fingerprint_feature(
+            mol,
+            "desc" if "desc" in augmented_features else None,
+            getdescriptors
+        )
     else:
         graph['morgan'] = None
         graph['maccs'] = None
+        graph['desc'] = None
 
     return graph    
     
