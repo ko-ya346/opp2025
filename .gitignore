@@ -6,3 +6,4 @@ outputs/
 notebook/*
 **/__pycache__/
 tmp/
+wandb/
