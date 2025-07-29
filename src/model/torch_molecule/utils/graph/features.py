@@ -178,4 +178,33 @@ def getmaccsfingerprint(mol):
     return [int(b) for b in fp.ToBitString()]
 
 def getdescriptors(mol):
-    return [desc[1](mol) for desc in Descriptors.descList]
+    useless_cols = [
+        'NumRadicalElectrons', 
+        'BCUT2D_MWHI', 
+        'BCUT2D_MWLOW', 
+        'BCUT2D_CHGHI', 
+        'BCUT2D_CHGLO', 
+        'BCUT2D_LOGPHI', 
+        'BCUT2D_LOGPLOW', 
+        'BCUT2D_MRHI', 
+        'BCUT2D_MRLOW', 
+        'SMR_VSA8', 
+        'SlogP_VSA9', 'fr_barbitur', 'fr_benzodiazepine', 'fr_dihydropyridine', 
+        'fr_isothiocyan', 'fr_lactam', 'fr_nitroso', 'fr_prisulfonamd', 
+        'fr_thiocyan', 'MaxAbsEStateIndex', 'MolWt', 
+        'HeavyAtomMolWt', 'ExactMolWt', 'NumValenceElectrons', 
+        'MaxPartialCharge', 'FpDensityMorgan1', 
+        'FpDensityMorgan2', 'FpDensityMorgan3', 
+        'BertzCT', 'Chi0', 'Chi0n', 'Chi0v', 'Chi1', 'Chi1n', 
+        'Chi1v', 'Chi2n', 'Chi2v', 'Chi3n', 'Chi3v', 'Chi4n', 'Chi4v', 
+        'Kappa1', 'Kappa2', 'Kappa3', 'LabuteASA', 'SMR_VSA1', 
+        'SMR_VSA2', 'SMR_VSA7', 'SlogP_VSA6', 'TPSA', 
+        'VSA_EState1', 'VSA_EState2', 'VSA_EState6', 'HeavyAtomCount', 
+        'NHOHCount', 'NOCount', 'NumAliphaticHeterocycles', 'NumAmideBonds', 
+        'NumAromaticCarbocycles', 'NumAromaticRings', 'NumAtomStereoCenters', 
+        'NumHAcceptors', 'NumHDonors', 'NumRotatableBonds', 'Phi', 'RingCount', 
+        'MolMR', 'fr_Al_OH', 'fr_ArN', 'fr_Ar_NH', 'fr_Ar_OH', 'fr_COO', 'fr_C_O', 
+        'fr_C_O_noCOO', 'fr_alkyl_halide', 'fr_azide', 'fr_benzene', 'fr_halogen', 
+        'fr_nitro', 'fr_nitro_arom', 'fr_phenol', 'fr_phenol_noOrthoHbond', 'fr_phos_acid'
+    ]
+    return [desc[1](mol) for desc in Descriptors.descList if desc[0] not in useless_cols]
