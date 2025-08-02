@@ -3,7 +3,10 @@ import pandas as pd
 
 from tqdm.auto import tqdm
 
+from rdkit import Chem
 from rdkit.Chem import Descriptors, AllChem, MolFromSmiles
+
+from mordred import Calculator, descriptors
 
 # ---------------------------
 # 分子記述子を生成する関数
@@ -36,3 +39,49 @@ def add_descriptors(df, radius=2, fp_size=1024):
     df = pd.concat([df, mfp_df], axis=1).reset_index(drop=True)
     return df
     
+
+def replace_dummy_with_h(mol):
+    """
+    * を水素に置換する。
+    3D 配座の最適化の際にダミーデータがあると困る
+    """
+    rw = Chem.RWMol(mol)
+    for atom in list(mol.GetAtoms()):
+        if atom.GetSymbol() == "*":
+            rw.ReplaceAtom(atom.GetIdx(), Chem.Atom("H"))
+    mol = rw.GetMol()
+    Chem.SanitizeMol(mol)
+    return mol
+
+def generate_conform_3d(mol, n=10):
+    """
+    安定な立体配座を計算する
+    """
+    mol = replace_dummy_with_h(mol)
+    mol = Chem.AddHs(mol)
+    params = AllChem.ETKDGv3()
+    _ = AllChem.EmbedMultipleConfs(mol, numConfs=n, params=params)
+    AllChem.MMFFOptimizeMoleculeConfs(mol, numThreads=10)
+    return mol
+    
+def add_descriptors_mordred(df, num_confs=10, ignore_3D=True):
+    """
+    mordred の記述子を返す
+    """
+    calc = Calculator(descriptors, ignore_3D=ignore_3D)
+    mols = []
+    for smi in tqdm(df["SMILES"].values):
+        try:
+            mol = generate_conform_3d(Chem.MolFromSmiles(smi), n=num_confs)
+            mols.append(mol)
+        except ValueError as e:
+            print(f"{smi}, {e}")
+            mol = Chem.MolFromSmiles(smi)
+            mols.append(mol) 
+
+    desc_df = calc.pandas(mols)
+    return pd.concat([df, desc_df], axis=1) 
+
+
+
+
