@@ -13,7 +13,7 @@ dependencies = [
   "ipykernel>=6.29.5",
   "seaborn>=0.13.2",
   "tqdm>=4.67.1",
-  "torch>=2.7.1",
+  "torch>=2.7.0",
   "transformers>=4.52.4",
   "accelerate>=1.8.1",
   "tiktoken>=0.9.0",
@@ -27,5 +27,9 @@ dependencies = [
   "jupyter-autotime>=1.1.0",
   "rdkit>=2025.3.3",
   "wandb>=0.21.0",
+  "mordredcommunity>=2.0.6",
+  "schnetpack>=2.0.4",
+  "schedulefree>=1.4.1",
+  "multimethod>=2.0",
 ]
 

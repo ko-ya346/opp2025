@@ -47,7 +47,7 @@ def train_lgb_for_target(train, target_col, features, params, output_dir: Path, 
             ]
         )
 
-        save_lgb_model(model, str(output_dir / f"model_{fold}.txt"))
+        save_lgb_model(model, str(output_dir / f"model_{target_col}_{fold}.txt"))
 
         pred = model.predict(X_val, num_iteration=model.best_iteration)
         oof[val_idx] = pred
@@ -59,6 +59,7 @@ def train_lgb_for_target(train, target_col, features, params, output_dir: Path, 
         loss_table["mse"] = mse
 
         loss_tables.append(loss_table)
+        models.append(model)
 
     score_mse = mean_squared_error(y, oof)
     score_mae = mean_absolute_error(y, oof)

@@ -7,4 +7,5 @@
 # papermill notebook/exp023.ipynb notebook/exp023_3_output.ipynb -p exp "exp023_3" -p augmented_feature '[]'
 # papermill notebook/exp023.ipynb notebook/exp023_4_output.ipynb -p exp "exp023_4" -p drop_ratio 0.3 
 # papermill notebook/exp023.ipynb notebook/exp023_5_output.ipynb -p exp "exp023_5" -p drop_ratio 0.1
-papermill notebook/exp024.ipynb notebook/exp024_1_output.ipynb -p debug False 
+# papermill notebook/exp024.ipynb notebook/exp024_1_output.ipynb -p debug False 
+papermill notebook/exp024.ipynb notebook/exp024_2_output.ipynb -p debug False 
