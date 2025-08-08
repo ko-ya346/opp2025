@@ -387,7 +387,7 @@ MODELscience ではないことを知っています。
   - よく見ると、mf の特徴量の有無も目的変数によって効いたり効かなかったりしている
   - 目的変数毎にチューニングが必要そうだ
 
-# 8/2
+## 8/2
 - exp025 の結果が良好だったので考察
   - Tg, Tc は分子の剛性、結合パターンが強く影響する。環状化により分子末端の自由度が消失し、環内ひずみが加わる情報を GNN でとらえやすくなり、予測精度が改善
   - FFV (Fractional Free Volume), Rg (分子の大きさ指標), Density は主に分子全体の体積、形状、分子間配向挙動に依存
@@ -398,15 +398,25 @@ MODELscience ではないことを知っています。
       - 3D 対応GNN (SchNet, DimeNet, PaiNN), 原子の座標と種類をそのままネットワークに入力し、メッセージパッシングとともに距離情報を学習
       - 結合情報だけでなく原子間距離・角度・三体相関などエッジ特徴として与えることで立体構造依存性の高い性質予測に強い
     - Global Readout 層の工夫 （Attension 機構、Set2Set のようなグローバルプーリングで分布館をとらえる）
+- mordred の記述子を計算する関数実装、exp026 で精度検証
+  - numThreads = 10 で 8600 行データの処理に 1-2 時間かかりそう
+  - mordred の特徴量だけだと良化しないので、rdkit の記述子と併用してみる
 
-  - 
+## 8/3
+- MolMix 触る
+  - https://github.com/andreimano/MolMix
+  - 1D, 2D, 3D のモデル全部使える
+  - nvcc が必要そうなので準備
 
-```from rdkit.Chem import AllChem, rdMolDescriptors
-from rdkit import Chem
-from mordred import Calculator, descriptors
+## 8/9
+- MolMix を試そうとして Ubuntu アップデートしたら依存関係こわれた
+  - 復旧するのに 1週間弱かかってしまった
+- その間に LB が正常化していた
+  - 0.074, gnn と lightgbm いずれも
+  - gnn は CV もっと悪かった気がするけど、、、
 
-mol = Chem.MolFromSmiles('CCO')
-calc = Calculator(descriptors, ignore_3D=True)  # 3D除外も可能
-df = calc.pandas([mol])  # DataFrameで取得
-print(df.head())
-```
+### next action
+- スコアいい Code が出ていたので参考にしてみる
+  - 追加データが要因ぽく見えるけど、、、
+  - データ拡張とか色々やってるけど意味あるようにはみえない
+  - https://www.kaggle.com/code/guanyuzhen/neurlps-2025-baseline-random?scriptVersionId=250870055

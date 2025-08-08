@@ -70,6 +70,9 @@ def add_descriptors_mordred(df, num_confs=10, ignore_3D=True):
     """
     calc = Calculator(descriptors, ignore_3D=ignore_3D)
     mols = []
+
+    descs = []
+
     for smi in tqdm(df["SMILES"].values):
         try:
             mol = generate_conform_3d(Chem.MolFromSmiles(smi), n=num_confs)
@@ -78,6 +81,9 @@ def add_descriptors_mordred(df, num_confs=10, ignore_3D=True):
             print(f"{smi}, {e}")
             mol = Chem.MolFromSmiles(smi)
             mols.append(mol) 
+
+        mol = MolFromSmiles(smi)
+        descs.append(compute_all_descriptors(mol))
 
     desc_df = calc.pandas(mols)
     return pd.concat([df, desc_df], axis=1) 
