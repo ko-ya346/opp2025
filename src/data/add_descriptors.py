@@ -92,7 +92,9 @@ def generate_conform_3d(mol, n=10, max_iters=200):
     
 def add_descriptors_mordred(df, num_confs=10, ignore_3D=True):
     """
-    mordred の記述子を返す
+    Mordred 記述子を返す
+    - 3D は最低エネルギー配座1つに絞る
+    - 失敗時は2Dで代替
     """
     calc = Calculator(descriptors, ignore_3D=ignore_3D)
     mols = []
@@ -101,18 +103,21 @@ def add_descriptors_mordred(df, num_confs=10, ignore_3D=True):
 
     for smi in tqdm(df["SMILES"].values):
         try:
-            mol = generate_conform_3d(Chem.MolFromSmiles(smi), n=num_confs)
+            base = Chem.MolFromSmiles(smi)
+            mol = generate_conform_3d(base, n=num_confs) if not ignore_3D else base
+            if mol is None:
+                mol = base
             mols.append(mol)
-        except ValueError as e:
+        except Exception as e:
             print(f"{smi}, {e}")
             mol = Chem.MolFromSmiles(smi)
             mols.append(mol) 
 
-        mol = MolFromSmiles(smi)
-        descs.append(compute_all_descriptors(mol))
-
     desc_df = calc.pandas(mols)
-    return pd.concat([df, desc_df], axis=1) 
+
+    # 数値化, 例外値処理
+    desc_df = desc_df.replace([np.inf, -np.inf], np.nan)
+    return pd.concat([df, desc_df], axis=1).reset_index(drop=True)
 
 
 
