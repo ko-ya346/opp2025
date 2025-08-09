@@ -18,9 +18,9 @@ def compute_all_descriptors(mol):
 
 def get_mfp(mol, radius, fp_size):
     if mol is None:
-        return np.zeros((1, fp_size))
+        return np.zeros((fp_size,), dtype=np.int8)
     mfp = AllChem.GetMorganFingerprintAsBitVect(mol, radius=radius, nBits=fp_size)
-    return np.array(list(mfp.ToBitString())).astype(int)
+    return np.frombuffer(mfp.ToBitString().encode("ascii"), dtype="S1").astype(np.int8) - ord(b'0')
     
 def add_descriptors(df, radius=2, fp_size=1024):
     descriptor_names  = [desc[0] for desc in Descriptors.descList]
