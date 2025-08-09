@@ -53,15 +53,41 @@ def replace_dummy_with_h(mol):
     Chem.SanitizeMol(mol)
     return mol
 
-def generate_conform_3d(mol, n=10):
+def generate_conform_3d(mol, n=10, max_iters=200):
     """
-    安定な立体配座を計算する
+    安定な立体配座を計算し、最低エネルギー配座だけ残して返す
     """
+    if mol is None:
+        return None
+
     mol = replace_dummy_with_h(mol)
     mol = Chem.AddHs(mol)
+
     params = AllChem.ETKDGv3()
-    _ = AllChem.EmbedMultipleConfs(mol, numConfs=n, params=params)
-    AllChem.MMFFOptimizeMoleculeConfs(mol, numThreads=10)
+    params.numThreads = 0 # 0: 全スレッド
+    params.randomSeed = 42 # 再現性
+    cid_list = AllChem.EmbedMultipleConfs(mol, numConfs=n, params=params)
+    if len(cid_list) == 0:
+        # 埋め込み失敗時は H 対か前に戻す
+        mol = Chem.RemoveHs(mol, sanitize=True)
+        return mol
+    
+    # MMFF で最適化(可能なら MMFF, ダメならUFF)
+    try:
+        res = AllChem.MMFFOptimizeMoleculeConfs(mol, mmffVariant="MMFF94s", maxIters=Max_iters)
+        energies = [e for (_, e) in res]
+    except Exception:
+        res = AllChem.UFFOptimizeMoleculeConfs(mol, maxIters=max_iters)
+        energies = [e for (_, e) in res]
+
+    # 最小エネルギー配座を選び、それ以外を削除
+    best_idx = int(np.argmin(energies))
+    best_cid = cid_list[best_idx]
+    conf_ids = [int(c) for c in cid_list]
+    for cid in conf_ids:
+        if cid != best_cid:
+            mol.RemoveConformer(cid)
+
     return mol
     
 def add_descriptors_mordred(df, num_confs=10, ignore_3D=True):
