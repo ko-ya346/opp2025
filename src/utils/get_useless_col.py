@@ -1,6 +1,6 @@
 import numpy as np
 
-def get_useless_cols(df, threshold_corr=0.95):
+def get_useless_cols(df, threshold_null=0.9, threshold_corr=0.95):
     feature_cols = [col for col in df.columns]
 
     # ユニーク数が1の特徴量
@@ -8,7 +8,7 @@ def get_useless_cols(df, threshold_corr=0.95):
     print("Unique=1 col:", unique_1_cols)
 
     # 欠損が多い特徴量
-    almost_null_cols = [col for col in feature_cols if (df[col].isnull().sum() / len(df)) >= 0.99]
+    almost_null_cols = [col for col in feature_cols if (df[col].isnull().sum() / len(df)) >= threshold_null]
 
     valid_cols = [col for col in feature_cols if col not in unique_1_cols + almost_null_cols]
 

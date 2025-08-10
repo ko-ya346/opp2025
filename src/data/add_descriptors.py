@@ -33,7 +33,7 @@ def add_descriptors(df, radius=2, fp_size=1024):
         mfp_mat[idx] = get_mfp(mol=mol, radius=radius, fp_size=fp_size)
         
     desc_df = pd.DataFrame(descs, columns=descriptor_names)
-    mfp_df = pd.DataFrame(mfp_mat, columns=[f"mfp_vec{i}" for i in range(fp_size)]
+    mfp_df = pd.DataFrame(mfp_mat, columns=[f"mfp_vec{i}" for i in range(fp_size)])
     out = pd.concat([df, desc_df, mfp_df], axis=1).reset_index(drop=True)
     out = out.replace([np.inf, -np.inf], np.nan)
     return out
@@ -89,7 +89,7 @@ def generate_conform_3d(mol, n=10, max_iters=200):
 
     return mol
     
-def add_descriptors_mordred(df, num_confs=10, ignore_3D=True):
+def add_descriptors_mordred(df, num_confs=3, ignore_3D=True, ignore_3d_stats=True):
     """
     Mordred 記述子を返す
     - 3D は最低エネルギー配座1つに絞る
@@ -99,11 +99,16 @@ def add_descriptors_mordred(df, num_confs=10, ignore_3D=True):
     mols = []
 
     descs = []
+    features_3d = []
 
-    for smi in tqdm(df["SMILES"].values):
+    for smi in tqdm(df["SMILES"].values, desc="mordred desc"):
         try:
             base = Chem.MolFromSmiles(smi)
             mol = generate_conform_3d(base, n=num_confs) if not ignore_3D else base
+            if not ignore_3d_stats:
+                feats = get_3d_summary_stats(mol)
+                features_3d.append(feats)
+                # 3次元特徴を計算
             if mol is None:
                 mol = base
             mols.append(mol)
@@ -116,7 +121,72 @@ def add_descriptors_mordred(df, num_confs=10, ignore_3D=True):
 
     # 数値化, 例外値処理
     desc_df = desc_df.replace([np.inf, -np.inf], np.nan)
-    return pd.concat([df, desc_df], axis=1).reset_index(drop=True)
+    df = pd.concat([df, desc_df], axis=1)
+    if len(features_3d):
+        df = pd.concat([df, pd.DataFrame(features_3d)], axis=1)
+    return df.reset_index(drop=True)
+
+
+def get_3d_summary_stats(mol):
+    """
+    mol: 3D座標をもつ RDKit Mol (単一コンフォーマ)
+    return: dict 形式の統計特徴
+    """
+    if mol is None or mol.GetNumConformers() == 0:
+        return {
+            "dist_mean": np.nan,
+            "dist_std": np.nan,
+            "dist_p10": np.nan,
+            "dist_p90": np.nan,
+            "angle_mean": np.nan,
+            "angle_std": np.nan,
+            "n_contacts_3A": np.nan,
+            "n_contacts_5A": np.nan,
+    }
+    conf = mol.GetConformer()
+    n_atoms = mol.GetNumAtoms()
+
+    # 距離行列
+    dists = []
+    for i in range(n_atoms):
+        for j in range(i+1, n_atoms):
+            dist = conf.GetAtomPosition(i).Distance(conf.GetAtomPosition(j))
+            dists.append(dist)
+    dists = np.array(dists)
+    dist_mean = np.mean(dists)
+    dist_std = np.std(dists)
+    dist_p10 = np.percentile(dists, 10)
+    dist_p90 = np.percentile(dists, 90)
+
+    # 角度統計
+    angles = []
+    for i in range(n_atoms):
+        neighs = [nbr.GetIdx() for nbr in mol.GetAtomWithIdx(i).GetNeighbors()]
+        for a in range(len(neighs)):
+            for b in range(a+1, len(neighs)):
+                v1 = np.array(conf.GetAtomPosition(neighs[a])) - np.array(conf.GetAtomPosition(i))
+                v2 = np.array(conf.GetAtomPosition(neighs[b])) - np.array(conf.GetAtomPosition(i))
+                cosang = np.dot(v1, v2) / (np.linalg.norm(v1) * np.linalg.norm(v2) + 1e-8)
+                angle = np.degrees(np.arccos(np.clip(cosang, -1.0, 1.0)))
+                angles.append(angle)
+    angles = np.array(angles) if angles else np.array([np.nan])
+    angles_mean = np.nanmean(angles)
+    angles_std = np.nanstd(angles)
+
+    # 近接カウント
+    n_contacts_3A = np.sum(dists < 3.0)
+    n_contacts_5A = np.sum(dists < 5.0)
+    return {
+        "dist_mean": dist_mean, 
+        "dist_std": dist_std, 
+        "dist_p10": dist_p10, 
+        "dist_p90": dist_p90,
+        "angle_mean": angles_mean, 
+        "angle_std": angles_std, 
+        "n_contacts_3A": n_contacts_3A,
+        "n_contacts_5A": n_contacts_5A, 
+    }
+
 
 
 
