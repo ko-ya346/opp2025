@@ -15,11 +15,11 @@
 # mordred 特徴量を混ぜた lightgbm
 # papermill notebook/exp026.ipynb notebook/exp026_output.ipynb -p debug False 
 # target 毎に学習
-papermill notebook/exp027.ipynb notebook/executed/exp027_output.ipynb -p debug False 
+# papermill notebook/exp027.ipynb notebook/executed/exp027_output.ipynb -p debug False 
 # 3d の距離とかを特徴量に追加
 # papermill notebook/exp028.ipynb notebook/exp028_output.ipynb -p debug False 
 # シンプルlightgbm
-papermill notebook/exp020.ipynb notebook/executed/exp020_output.ipynb -p debug False 
+# papermill notebook/exp020.ipynb notebook/executed/exp020_output.ipynb -p debug False 
 
 # scaffold で groupkfold
 papermill notebook/exp029.ipynb notebook/executed/exp029_output.ipynb -p debug False 
