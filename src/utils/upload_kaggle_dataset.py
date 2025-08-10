@@ -45,5 +45,6 @@ def upload_kaggle_dataset(dataset_id: str, dir):
                 "-p", str(dir),
                 "--dir-mode", "zip"
             ])
-    except:
+    except Exception as e:
+        print(e)
         print("Upload failed.")
