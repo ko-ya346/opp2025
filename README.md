@@ -430,4 +430,16 @@ MODELscience ではないことを知っています。
 - target 毎の平均 mae を wandb に記録できるようにした (exp018, exp025, exp026)
 - run_notebook.sh に実験セット
   - scaffold で groupkfold
-  - gnn で シングルタスク学習 
+  - gnn で シングルタスク学習
+
+## 8/10
+- 昨日の実験確認
+- exp029 提出、0.073
+
+## 8/12
+- tg-smiles-pid-polymer-class の追加データ使用
+  - cv: 0.064, lb: 0.068
+  - 公開 Code 再現できない
+- 公開コード再現できないので検証
+  - 追加データ入れたけどあまり効果なし
+  - 

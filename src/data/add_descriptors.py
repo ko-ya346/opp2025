@@ -4,9 +4,20 @@ import pandas as pd
 from tqdm.auto import tqdm
 
 from rdkit import Chem
-from rdkit.Chem import Descriptors, AllChem, MolFromSmiles
+from rdkit.Chem import Descriptors, AllChem, MolFromSmiles, MACCSkeys
 
 from mordred import Calculator, descriptors
+
+
+def add_maccs(df):
+    maccs_arr = np.zeros((len(df), 167), dtype=np.int8)
+    for idx, smiles in enumerate(tqdm(df["SMILES"].values, desc="Generating maccs")):
+        mol = MolFromSmiles(smiles)
+        maccs_arr[idx, :] = MACCSkeys.GenMACCSKeys(mol)
+    maccs_df = pd.DataFrame(maccs_arr)
+    maccs_df.columns = [f"maccs_{idx}" for idx in range(maccs_df.shape[1])]
+    return pd.concat([df, maccs_df], axis=1)
+
 
 
 def get_mfp(mol, radius, fp_size):
@@ -73,7 +84,7 @@ def generate_conform_3d(mol, n=10, max_iters=200):
     
     # MMFF で最適化(可能なら MMFF, ダメならUFF)
     try:
-        res = AllChem.MMFFOptimizeMoleculeConfs(mol, mmffVariant="MMFF94s", maxIters=Max_iters)
+        res = AllChem.MMFFOptimizeMoleculeConfs(mol, mmffVariant="MMFF94s", maxIters=max_iters)
         energies = [e for (_, e) in res]
     except Exception:
         res = AllChem.UFFOptimizeMoleculeConfs(mol, maxIters=max_iters)
@@ -98,7 +109,6 @@ def add_descriptors_mordred(df, num_confs=3, ignore_3D=True, ignore_3d_stats=Tru
     calc = Calculator(descriptors, ignore_3D=ignore_3D)
     mols = []
 
-    descs = []
     features_3d = []
 
     for smi in tqdm(df["SMILES"].values, desc="mordred desc"):

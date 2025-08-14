@@ -22,4 +22,6 @@
 # papermill notebook/exp020.ipynb notebook/executed/exp020_output.ipynb -p debug False 
 
 # scaffold で groupkfold
-papermill notebook/exp029.ipynb notebook/executed/exp029_output.ipynb -p debug False 
+# papermill notebook/exp029.ipynb notebook/executed/exp029_output.ipynb -p debug False 
+# exp027 を groupkfold に変更, torch-molecule のモデル全般試す
+papermill notebook/exp030.ipynb notebook/executed/exp030_output.ipynb -p debug False 
