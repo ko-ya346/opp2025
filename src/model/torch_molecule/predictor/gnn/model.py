@@ -61,6 +61,8 @@ class GNN(nn.Module):
                 graph_dim += 1024
             if "maccs" in augmented_feature:
                 graph_dim += 167
+            if "desc" in augmented_feature:
+                graph_dim += 128
         self.predictor = MLP(graph_dim, hidden_features=2 * hidden_size, out_features=num_task)
     
     def initialize_parameters(self, seed=None):
@@ -88,12 +90,18 @@ class GNN(nn.Module):
 
     def _augmented_graph_features(self, batched_data, h_rep):
         if self.augmented_feature:
+            print("batched_data", batched_data)
+            print("h_rep", h_rep)
+            print("desc", batched_data.desc)
             if 'morgan' in self.augmented_feature:
                 morgan = batched_data.morgan.type_as(h_rep)
                 h_rep = torch.cat((h_rep, morgan), dim=1)
             if 'maccs' in self.augmented_feature:
                 maccs = batched_data.maccs.type_as(h_rep)
                 h_rep = torch.cat((h_rep, maccs), dim=1)
+            if "desc" in self.augmented_feature:
+                desc = batched_data.desc.type_as(h_rep)
+                h_rep = torch.cat((h_rep, desc), dim=1)
         return h_rep
 
     def compute_loss(self, batched_data, criterion):
@@ -107,7 +115,9 @@ class GNN(nn.Module):
         return loss
 
     def forward(self, batched_data):
+        print("forward batched_data", batched_data)
         h_node, _ = self.graph_encoder(batched_data)
+        print("forward h_node", h_node)
         h_rep = self.pool(h_node, batched_data.batch)
         h_rep = self._augmented_graph_features(batched_data, h_rep)
         prediction = self.predictor(h_rep)

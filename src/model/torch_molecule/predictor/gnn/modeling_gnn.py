@@ -111,7 +111,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
     graph_pooling: str = "sum"
     
     # Augmented features
-    augmented_feature: Optional[list[Literal["morgan", "maccs"]]] = field(
+    augmented_feature: Optional[list[Literal["morgan", "maccs", "desc"]]] = field(
         default_factory=lambda: ["morgan", "maccs"]
     )
     
@@ -272,6 +272,10 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
             if graph["maccs"] is not None:
                 g.maccs = torch.tensor(graph["maccs"], dtype=torch.int8).view(1, -1)
                 del graph["maccs"]
+
+            if graph["desc"] is not None:
+                g.desc = torch.tensor(graph["desc"], dtype=torch.float16).view(1, -1)
+                del graph["desc"]
 
             pyg_graph_list.append(g)
 
@@ -664,6 +668,8 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         y_true = np.concatenate(y_true_list, axis=0)
         
         # Compute metric
+        print("y true: ", y_true)
+        print("y pred: ", y_pred)
         metric_value = float(self.evaluate_criterion(y_true, y_pred))
         
         # Adjust metric value based on higher/lower better
