@@ -28,6 +28,8 @@ def train_lgb_for_target(train, target_col, features, params, output_dir: Path, 
 
     kf = KFold(n_splits=n_splits, shuffle=True, random_state=42)
 
+
+
     for fold, (tr_idx, val_idx) in enumerate(kf.split(X)):
         loss_table = {}
         print(f"fold: {fold + 1}")

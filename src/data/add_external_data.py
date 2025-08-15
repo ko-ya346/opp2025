@@ -1,11 +1,31 @@
 import numpy as np
 import pandas as pd
 
+from .canonical import make_smile_canonical
+
 
 def add_external_data(df, ex_path, col, rename_d=None):
-    ex_df = pd.read_csv(ex_path)
+    ex_df = pd.DataFrame()
+    if ".csv" in str(ex_path):
+        ex_df = pd.read_csv(ex_path)
+    elif ".xlsx" in str(ex_path):
+        ex_df = pd.read_excel(ex_path)
+    else:
+        ValueError(f"Unexpected extension {ex_path}")
+
     if rename_d is not None:
         ex_df = ex_df.rename(columns=rename_d)
+
+    # smiles-extra-data/data_tg3.xlsx の Tg はケルビン
+    if "smiles-extra-data/data_tg3.xlsx" in str(ex_path):
+        ex_df[col] -= 273.15
+
+    if "smiles-extra-data/data_dnst1.xlsx" in str(ex_path):
+        ex_df = ex_df[ex_df[col]!="nylon"]
+        ex_df[col] = ex_df[col].astype(float)
+        ex_df[col] -= 0.118
+
+    ex_df["SMILES"] = ex_df["SMILES"].apply(make_smile_canonical)
     ex_df = ex_df.groupby("SMILES")[col].mean().reset_index()
     ex_df = ex_df[["SMILES", col]]
     ex_df.columns = ["SMILES", f"{col}_ex"]

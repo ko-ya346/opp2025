@@ -408,7 +408,7 @@ MODELscience ではないことを知っています。
   - 1D, 2D, 3D のモデル全部使える
   - nvcc が必要そうなので準備
 
-## 8/9
+## 8/8
 - MolMix を試そうとして Ubuntu アップデートしたら依存関係こわれた
   - 復旧するのに 1週間弱かかってしまった
 - その間に LB が正常化していた
@@ -420,3 +420,26 @@ MODELscience ではないことを知っています。
   - 追加データが要因ぽく見えるけど、、、
   - データ拡張とか色々やってるけど意味あるようにはみえない
   - https://www.kaggle.com/code/guanyuzhen/neurlps-2025-baseline-random?scriptVersionId=250870055
+- MolMix を google cloud で触ってみる
+  - flash_attn を書き換える
+ 
+## 8/9
+- chatgpt-5 に壁打ちしたら自分の知識を超えたアドバイスをたくさんもらった
+- ターゲット同士の相関確認... check_corr_target.ipynb
+  - あんまり相関なし、この場合はマルチタスク学習はイマイチらしい
+- target 毎の平均 mae を wandb に記録できるようにした (exp018, exp025, exp026)
+- run_notebook.sh に実験セット
+  - scaffold で groupkfold
+  - gnn で シングルタスク学習
+
+## 8/10
+- 昨日の実験確認
+- exp029 提出、0.073
+
+## 8/12
+- tg-smiles-pid-polymer-class の追加データ使用
+  - cv: 0.064, lb: 0.068
+  - 公開 Code 再現できない
+- 公開コード再現できないので検証
+  - 追加データ入れたけどあまり効果なし
+  - 

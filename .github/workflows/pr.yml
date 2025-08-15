@@ -89,7 +89,8 @@ jobs:
               "minatoyukinaxlisa/tc-smiles",
               "dmitryuarov/smiles-extra-data",
               "henryjavier/torch-geometric-2-6-1",
-              "koya346/torch-molecule-src"
+              "koya346/torch-molecule-src",
+              "linyeping/tg-smiles-pid-polymer-class"
             ]
           }
         EOF

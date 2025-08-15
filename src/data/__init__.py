@@ -1,8 +1,9 @@
 from .load_data import load_data
-from .add_descriptors import add_descriptors, add_descriptors_mordred
+from .add_descriptors import add_descriptors, add_descriptors_mordred, add_maccs
 from .generate_random_smiles import augment_random_smiles_df
 from .add_external_data import add_external_data 
 from .canonical import make_smile_canonical
 from .compute_graph_features import add_graph_features
 from .count_atoms import add_count_atoms
 from .generate_trimer import generate_trimer
+from .augument_gmm import add_augumented_gmm
