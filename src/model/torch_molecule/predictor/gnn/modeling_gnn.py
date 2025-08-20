@@ -1,3 +1,4 @@
+import random
 import os
 import numpy as np
 from tqdm import tqdm
@@ -266,15 +267,15 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
                 del graph["y"]
    
             if graph["morgan"] is not None:
-                g.morgan = torch.tensor(graph["morgan"], dtype=torch.int8).view(1, -1)
+                g.morgan = torch.tensor(graph["morgan"], dtype=torch.float32).view(1, -1)
                 del graph["morgan"]
             
             if graph["maccs"] is not None:
-                g.maccs = torch.tensor(graph["maccs"], dtype=torch.int8).view(1, -1)
+                g.maccs = torch.tensor(graph["maccs"], dtype=torch.float32).view(1, -1)
                 del graph["maccs"]
 
             if graph["desc"] is not None:
-                g.desc = torch.tensor(graph["desc"], dtype=torch.float16).view(1, -1)
+                g.desc = torch.tensor(graph["desc"], dtype=torch.float32).view(1, -1)
                 del graph["desc"]
 
             pyg_graph_list.append(g)
@@ -516,11 +517,37 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         # Prepare datasets and loaders
         X_train, y_train = self._validate_inputs(X_train, y_train)
         train_dataset = self._convert_to_pytorch_data(X_train, y_train)
+
+        def scan_dataset(train_dataset):
+            bad = []
+            for i, g in enumerate(train_dataset):
+                for name in ["x", "edge_attr", "morgan", "maccs", "desc", "y"]:
+                    if not hasattr(g, name):
+                        continue
+                    t = getattr(g, name)
+                    if not torch.isfinite(t).all():
+                        bad.append((i, name))
+            return bad
+        
+        bad = scan_dataset(train_dataset)
+        print("bad samples: ", bad[:20], "total: ", len(bad))
+
+        g = torch.Generator()
+        g.manual_seed(42)
+
+        def seed_worker(worker_id):
+            worker_seed = 42 + worker_id
+            np.random.seed(worker_seed)
+            random.seed(worker_seed)
+
+
         train_loader = DataLoader(
             train_dataset,
             batch_size=self.batch_size,
             shuffle=True,
-            num_workers=0
+            num_workers=0,
+            generator=g,
+            worker_init_fn=seed_worker
         )
 
         if X_val is None or y_val is None:
@@ -614,6 +641,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         # Convert to PyTorch Geometric format and create loader
         X, _ = self._validate_inputs(X)
         dataset = self._convert_to_pytorch_data(X)
+
         loader = DataLoader(dataset, batch_size=self.batch_size, shuffle=False)
 
         if self.model is None:
@@ -668,8 +696,6 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         y_true = np.concatenate(y_true_list, axis=0)
         
         # Compute metric
-        print("y true: ", y_true)
-        print("y pred: ", y_pred)
         metric_value = float(self.evaluate_criterion(y_true, y_pred))
         
         # Adjust metric value based on higher/lower better
