@@ -24,4 +24,27 @@
 # scaffold で groupkfold
 # papermill notebook/exp029.ipynb notebook/executed/exp029_output.ipynb -p debug False 
 # exp027 を groupkfold に変更, torch-molecule のモデル全般試す
-papermill notebook/exp030.ipynb notebook/executed/exp030_output.ipynb -p debug False 
+# papermill notebook/exp030.ipynb notebook/executed/exp030_output.ipynb -p debug False 
+
+# papermill notebook/exp035.ipynb notebook/executed/exp035_output_1.ipynb -p debug False -p notes "control" -p is_trimmer_cyclic False -p exp "exp035-1"
+# papermill notebook/exp035.ipynb notebook/executed/exp035_output_2.ipynb -p debug False -p notes "graph pooling=mean" -p exp "exp035-2" -p is_trimmer_cyclic False -p graph_pooling "mean"
+# papermill notebook/exp035.ipynb notebook/executed/exp035_output_3.ipynb -p debug False -p notes "use desc" -p exp "exp035-3" -p is_trimmer_cyclic False -p augmented_feature "['morgan', 'maccs', 'desc']" 
+# papermill notebook/exp035.ipynb notebook/executed/exp035_output_4.ipynb -p debug False -p notes "is_trimmer_cyclic" -p exp "exp035-4" -p is_trimmer_cyclic True 
+# papermill notebook/exp035.ipynb notebook/executed/exp035_output_5.ipynb -p debug False -p notes "is_trimmer_cyclic, desc, graph pooling mean" -p is_trimmer_cyclic True -p exp "exp035-5" -p graph_pooling "mean" -p augmented_feature "['morgan', 'maccs', 'desc']"
+# papermill notebook/exp035.ipynb notebook/executed/exp035_output_6.ipynb -p debug False -p notes "batch_size 256" -p exp "exp035-6" -p is_trimmer_cyclic False -p batch_size 256
+# papermill notebook/exp035.ipynb notebook/executed/exp035_output_7.ipynb -p debug False -p notes "num epoch 10000" -p exp "exp035-7" -p is_trimmer_cyclic False -p num_epochs 10000
+# papermill notebook/exp035.ipynb notebook/executed/exp035_output_8.ipynb -p debug False -p notes "drop ratio 0.3" -p exp "exp035-8" -p is_trimmer_cyclic False -p drop_ratio 0.3
+# papermill notebook/exp035.ipynb notebook/executed/exp035_output_9.ipynb -p debug False -p notes "drop ratio 0.1" -p exp "exp035-9" -p is_trimmer_cyclic False -p drop_ratio 0.1
+# papermill notebook/exp036.ipynb notebook/executed/exp036_output_1.ipynb -p debug False -p notes "fold 切り替え変更" -p exp "exp036-1"
+papermill notebook/exp037.ipynb notebook/executed/exp037_output_1.ipynb -p notes "control" -p exp "exp037-2" -p set_seed True -p debug False
+papermill notebook/exp037.ipynb notebook/executed/exp037_output_2.ipynb -p notes "control" -p exp "exp037-2" -p set_seed True -p debug False
+papermill notebook/exp037.ipynb notebook/executed/exp037_output_12.ipynb -p notes "control" -p exp "exp037-2" -p set_seed True -p debug False
+papermill notebook/exp037.ipynb notebook/executed/exp037_output_3.ipynb -p notes "use desc1" -p exp "exp037-3" -p set_seed True -p debug False -p augmented_feature "['morgan', 'maccs', 'desc']" 
+papermill notebook/exp037.ipynb notebook/executed/exp037_output_4.ipynb -p notes "use desc2" -p exp "exp037-4" -p set_seed True -p debug False -p augmented_feature "['morgan', 'maccs', 'desc']" 
+papermill notebook/exp037.ipynb notebook/executed/exp037_output_5.ipynb -p notes "use desc3" -p exp "exp037-5" -p set_seed True -p debug False -p augmented_feature "['morgan', 'maccs', 'desc']" 
+papermill notebook/exp037.ipynb notebook/executed/exp037_output_6.ipynb -p notes "use desc & graph pooling mean1" -p exp "exp037-6" -p set_seed True -p debug False -p augmented_feature "['morgan', 'maccs', 'desc']" -p graph_pooling "mean"
+papermill notebook/exp037.ipynb notebook/executed/exp037_output_7.ipynb -p notes "use desc & graph pooling mean2" -p exp "exp037-7" -p set_seed True -p debug False -p augmented_feature "['morgan', 'maccs', 'desc']" -p graph_pooling "mean"
+papermill notebook/exp037.ipynb notebook/executed/exp037_output_8.ipynb -p notes "use desc & graph pooling mean3" -p exp "exp037-8" -p set_seed True -p debug False -p augmented_feature "['morgan', 'maccs', 'desc']" -p graph_pooling "mean"
+papermill notebook/exp037.ipynb notebook/executed/exp037_output_9.ipynb -p notes "use desc & graph pooling mean & drop_ratio 1" -p exp "exp037-9" -p set_seed True -p debug False -p augmented_feature "['morgan', 'maccs', 'desc']" -p graph_pooling "mean" -p drop_ratio 0.1
+papermill notebook/exp037.ipynb notebook/executed/exp037_output_10.ipynb -p notes "use desc & graph pooling mean & drop_ratio 2" -p exp "exp037-10" -p set_seed True -p debug False -p augmented_feature "['morgan', 'maccs', 'desc']" -p graph_pooling "mean" -p drop_ratio 0.1
+papermill notebook/exp037.ipynb notebook/executed/exp037_output_11.ipynb -p notes "use desc & graph pooling mean & drop_ratio 3" -p exp "exp037-11" -p set_seed True -p debug False -p augmented_feature "['morgan', 'maccs', 'desc']" -p graph_pooling "mean" -p drop_ratio 0.1
