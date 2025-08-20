@@ -491,3 +491,16 @@ MODELscience ではないことを知っています。
   - fold はすべてのデータで分割
   - valid はオリジナルデータのみ
   - train は オリジナル + 外部データ、ただしvalid に含まれる smiles は除外
+- add_external_data で train に存在しないデータ使われてなかったので修正
+  - exp038 で検証、過去最高 cv、公開 Code の再現できなかった原因これかも
+  - エラーで提出できないので後でやる
+  - notebook を複数タブで開いてたことが原因だったかも。閉じたら submit できた
+  - lb: 0.068... あれぇ
+- exp039... 外部データによる補完なし、val はオリジナルデータのみ、val に含まれる smiles を train から除外
+  - cv: 0.0064   lb と相関とれたかも
+
+### next action
+- torch-molecule の transformer 試す
+- gnn の fold 切り方を変えて再実行
+- 改めてアンサンブル検証
+- 外部データ全部使う
