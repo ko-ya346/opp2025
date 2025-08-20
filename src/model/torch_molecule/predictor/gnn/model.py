@@ -18,7 +18,7 @@ class GNN(nn.Module):
         augmented_feature=['maccs', 'morgan'],
         algorithm_aligned = None
     ):
-        super(GNN, self).__init__()
+        super().__init__()
         gnn_name = gnn_type.split("-")[0]
         self.num_task = num_task
         self.hidden_size = hidden_size
@@ -61,7 +61,10 @@ class GNN(nn.Module):
                 graph_dim += 1024
             if "maccs" in augmented_feature:
                 graph_dim += 167
+            if "desc" in augmented_feature:
+                graph_dim += 128
         self.predictor = MLP(graph_dim, hidden_features=2 * hidden_size, out_features=num_task)
+        self.desc_norm = nn.LayerNorm(128)
     
     def initialize_parameters(self, seed=None):
         """
@@ -87,6 +90,11 @@ class GNN(nn.Module):
         self.apply(reset_parameters)
 
     def _augmented_graph_features(self, batched_data, h_rep):
+        def clean(t):
+            t = t.to(dtype=h_rep.dtype, device=h_rep.device)
+            t = torch.nan_to_num(t, nan=0.0, posinf=1e6, neginf=-1e6)
+            return torch.clamp(t, -1e4, 1e4) 
+        
         if self.augmented_feature:
             if 'morgan' in self.augmented_feature:
                 morgan = batched_data.morgan.type_as(h_rep)
@@ -94,6 +102,10 @@ class GNN(nn.Module):
             if 'maccs' in self.augmented_feature:
                 maccs = batched_data.maccs.type_as(h_rep)
                 h_rep = torch.cat((h_rep, maccs), dim=1)
+            if "desc" in self.augmented_feature:
+                desc = clean(batched_data.desc)
+                desc = self.desc_norm(desc)
+                h_rep = torch.cat((h_rep, desc), dim=1)
         return h_rep
 
     def compute_loss(self, batched_data, criterion):

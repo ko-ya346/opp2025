@@ -16,7 +16,7 @@ def add_scaffold_kfold(df, n_splits=5):
 
     grp = out.groupby("scaffold").size().reset_index(name="count")
     # 大きい骨格から割り当て
-    grp = grp.sort_values("count", ascending=False).reset_index(drop=True)
+    grp = grp.sort_values(["count", "scaffold"], ascending=[False, True]).reset_index(drop=True)
     
     # 同数の骨格が続くときの順序バイアスを抑えるためカルクシャッフル
     same_size_blocks = grp["count"].value_counts().index.tolist()
