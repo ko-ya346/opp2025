@@ -504,3 +504,31 @@ MODELscience ではないことを知っています。
 - gnn の fold 切り方を変えて再実行
 - 改めてアンサンブル検証
 - 外部データ全部使う
+
+## 8/22
+- exp041 学習データすべて使ってモデル学習するスクリプト作った（scripts/train_lgb.py）
+  - 提出したがスコアあまり改善せず
+
+### next action
+- 公開 Code をコピペして、何がスコアに寄与してるのか調べる
+  - 特徴量絞る
+  - gmm データ拡張
+  - 学習モデル
+
+## 8/23
+- morgan fingerprint の特徴量生成が変な気がしたので修正した（値がマイナスになるのが違和感）
+- cv と lb の相関がとれていない問題を解消したい
+  - cv を改善しても lb に反映されない
+
+### next action
+- target 毎の fold 固定
+- fold 毎の mae ばらつき確認、mae 悪い fold のデータ確認
+- 特徴量削減
+  - morgan fingerprint を truncated SVD で圧縮
+  - 重要度とかみて削減
+  - ハイパラ調整
+
+## 8/24
+- check_fold.ipynb で folds.csv 生成
+  - 5 fold では一部の fold で行数が少ないため 3 fold にした
+  - data/preprocess/fold/folds.csv に保存した
