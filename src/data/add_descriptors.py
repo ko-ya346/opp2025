@@ -5,6 +5,7 @@ from tqdm.auto import tqdm
 
 from rdkit import Chem
 from rdkit.Chem import Descriptors, AllChem, MolFromSmiles, MACCSkeys
+from rdkit.Chem.rdFingerprintGenerator import GetMorganGenerator
 
 from mordred import Calculator, descriptors
 
@@ -23,8 +24,8 @@ def add_maccs(df):
 def get_mfp(mol, radius, fp_size):
     if mol is None:
         return np.zeros((fp_size,), dtype=np.int8)
-    mfp = AllChem.GetMorganFingerprintAsBitVect(mol, radius=radius, nBits=fp_size)
-    return np.frombuffer(mfp.ToBitString().encode("ascii"), dtype="S1").astype(np.int8) - ord(b'0')
+    generator = GetMorganGenerator(radius=radius, fpSize=fp_size)
+    return generator.GetFingerprint(mol)
     
 def add_descriptors(df, radius=2, fp_size=1024):
     descriptor_names  = [name for (name, _) in Descriptors.descList]

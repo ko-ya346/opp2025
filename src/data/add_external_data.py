@@ -26,7 +26,11 @@ def add_external_data(df, ex_path, col, rename_d=None, is_complement=True):
         ex_df[col] -= 273.15
 
     if "smiles-extra-data/data_dnst1.xlsx" in str(ex_path):
-        ex_df = ex_df[ex_df[col]!="nylon"]
+        cond1 = ex_df[col] != "nylon"
+        cond2 = ex_df["SMILES"].notnull()
+        cond3 = ex_df[col].notnull()
+
+        ex_df = ex_df[cond1 & cond2 & cond3]
         ex_df[col] = ex_df[col].astype(float)
         ex_df[col] -= 0.118
 
