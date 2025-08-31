@@ -36,13 +36,30 @@ def add_scaffold_kfold(df, n_splits=5):
 
     return out
 
-def scaffold_cv_split(df: pd.DataFrame, fold_col: str = "fold", n_splits: int = 5):
+def scaffold_cv_split(df: pd.DataFrame, target: str, fold_col: str = "fold", n_splits: int = 5, remove_external: bool=False):
     """
     事前に make_scaffold_folds で fold を振っておく前提。
     これで for fold, (trn_idx, val_idx) in enumerate(scaffold_cv_split(...)) の形で使える。
     """
     assert fold_col in df.columns, f"{fold_col} not found. Run make_scaffold_folds() first."
+
+    if remove_external:
+        cond_org = df[f"org_{target}"].notnull()
+    else:
+        cond_org = np.array([True for _ in range(len(df))])
+
     for f in range(n_splits):
-        val_idx = df.index[df[fold_col] == f].to_numpy()
-        trn_idx = df.index[df[fold_col] != f].to_numpy()
+        # fold 列の条件
+        cond_fold = df[fold_col] == f
+        # 外部データの判定
+
+        val_idx = df.index[cond_fold & cond_org].to_numpy()
+        # valid データの smiles
+        val_smiles = df.iloc[val_idx]["SMILES"].values
+
+        # valid データに含まれる smiles は train から除外する（リークになるので）
+        cond_smiles = df["SMILES"].isin(val_smiles)
+
+        trn_idx = df.index[~cond_fold & ~cond_smiles].to_numpy()
+        print(f"train rows: {len(trn_idx)}, valid rows: {len(val_idx)}, ignore rows: {len(df) - len(trn_idx) - len(val_idx)}")
         yield f, trn_idx, val_idx
