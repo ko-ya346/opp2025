@@ -31,5 +31,6 @@ dependencies = [
   "schnetpack>=2.0.4",
   "schedulefree>=1.4.1",
   "multimethod>=2.0",
+  "optuna>=4.5.0",
 ]
 
