@@ -127,7 +127,7 @@ def add_descriptors_mordred(df, num_confs=3, ignore_3D=True, ignore_3d_stats=Tru
             mol = Chem.MolFromSmiles(smi)
             mols.append(mol) 
 
-    desc_df = calc.pandas(mols)
+    desc_df = calc.pandas(mols, nproc=1, quiet=True)
 
     # 数値化, 例外値処理
     desc_df = desc_df.replace([np.inf, -np.inf], np.nan)
