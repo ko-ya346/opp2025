@@ -51,6 +51,7 @@ def main():
     print(train.shape)
 
     # 学習時のパラメータ取得
+    # TODO: fold 毎に異なるパラメータを取得する場合があるので修正対応
     org_params = lgb.Booster(model_file=cv_model_paths[0]).params
     # print(org_params)
 
