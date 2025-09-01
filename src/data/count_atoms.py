@@ -31,10 +31,10 @@ def count_atoms(smile):
 
     return counts
 
-def add_count_atoms(df):
+def add_count_atoms(df, col="SMILES"):
     count_atom_features = []
 
-    for smiles in df["SMILES"].values:
+    for smiles in df[col].values:
         count_atom_features.append(count_atoms(smiles))
 
     return pd.concat([df, pd.DataFrame(count_atom_features)], axis=1)

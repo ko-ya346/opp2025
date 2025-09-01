@@ -10,15 +10,14 @@ from rdkit.Chem.rdFingerprintGenerator import GetMorganGenerator
 from mordred import Calculator, descriptors
 
 
-def add_maccs(df):
+def add_maccs(df, col="SMILES"):
     maccs_arr = np.zeros((len(df), 167), dtype=np.int8)
-    for idx, smiles in enumerate(tqdm(df["SMILES"].values, desc="Generating maccs")):
+    for idx, smiles in enumerate(tqdm(df[col].values, desc="Generating maccs")):
         mol = MolFromSmiles(smiles)
         maccs_arr[idx, :] = MACCSkeys.GenMACCSKeys(mol)
     maccs_df = pd.DataFrame(maccs_arr)
     maccs_df.columns = [f"maccs_{idx}" for idx in range(maccs_df.shape[1])]
     return pd.concat([df, maccs_df], axis=1)
-
 
 
 def get_mfp(mol, radius, fp_size):
@@ -27,12 +26,12 @@ def get_mfp(mol, radius, fp_size):
     generator = GetMorganGenerator(radius=radius, fpSize=fp_size)
     return generator.GetFingerprint(mol)
     
-def add_descriptors(df, radius=2, fp_size=1024):
+def add_descriptors(df, radius=2, fp_size=1024, col="SMILES"):
     descriptor_names  = [name for (name, _) in Descriptors.descList]
     descs = []
     mfp_mat = np.empty((len(df), fp_size), dtype=np.int8)
     
-    for idx, smi in enumerate(tqdm(df["SMILES"], desc="Generating descriptors")):
+    for idx, smi in enumerate(tqdm(df[col], desc="Generating descriptors")):
         mol = MolFromSmiles(smi)
         # rdkit desc (失敗したら nan)
         row = []
@@ -101,7 +100,7 @@ def generate_conform_3d(mol, n=10, max_iters=200):
 
     return mol
     
-def add_descriptors_mordred(df, num_confs=3, ignore_3D=True, ignore_3d_stats=True):
+def add_descriptors_mordred(df, num_confs=3, ignore_3D=True, ignore_3d_stats=True, col="SMILES"):
     """
     Mordred 記述子を返す
     - 3D は最低エネルギー配座1つに絞る
@@ -112,7 +111,7 @@ def add_descriptors_mordred(df, num_confs=3, ignore_3D=True, ignore_3d_stats=Tru
 
     features_3d = []
 
-    for smi in tqdm(df["SMILES"].values, desc="mordred desc"):
+    for smi in tqdm(df[col].values, desc="mordred desc"):
         try:
             base = Chem.MolFromSmiles(smi)
             mol = generate_conform_3d(base, n=num_confs) if not ignore_3D else base
@@ -128,7 +127,7 @@ def add_descriptors_mordred(df, num_confs=3, ignore_3D=True, ignore_3d_stats=Tru
             mol = Chem.MolFromSmiles(smi)
             mols.append(mol) 
 
-    desc_df = calc.pandas(mols)
+    desc_df = calc.pandas(mols, nproc=1, quiet=True)
 
     # 数値化, 例外値処理
     desc_df = desc_df.replace([np.inf, -np.inf], np.nan)

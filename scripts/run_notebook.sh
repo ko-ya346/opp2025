@@ -54,7 +54,7 @@
 # papermill notebook/exp047.ipynb notebook/executed/exp047_output_3.ipynb -p notes "cv 調整 & desc" -p exp "exp047-3" -p debug False -p augmented_feature "['morgan', 'maccs', 'desc']" -p graph_pooling "mean"
 
 # papermill notebook/exp049.ipynb notebook/executed/exp049.ipynb -p debug False
-papermill notebook/exp049.ipynb notebook/executed/exp049-1.ipynb -p debug False
+# papermill notebook/exp049.ipynb notebook/executed/exp049-1.ipynb -p debug False
 # papermill notebook/exp047.ipynb notebook/executed/exp047_output_4.ipynb -p notes "cv 調整 & 三量体& 三量体失敗は除外" -p exp "exp047-4" -p debug False -p augmented_feature "['morgan', 'maccs']" -p graph_pooling "mean" -p is_trimmer_cyclic True -p ignore_error_asterisk True
 # papermill notebook/exp047.ipynb notebook/executed/exp047_output_5.ipynb -p notes "cv 調整 & desc & アスタリスク2つ以外は除外" -p exp "exp047-5" -p debug False -p augmented_feature "['morgan', 'maccs', 'desc']" -p graph_pooling "mean" -p is_trimmer_cyclic False -p ignore_error_asterisk True
 # papermill notebook/exp047.ipynb notebook/executed/exp047_output_6.ipynb -p notes "cv 調整 & augmented_featureなし & アスタリスク2つ以外削除" -p exp "exp047-6" -p debug False -p augmented_feature "[]" -p graph_pooling "mean" -p is_trimmer_cyclic False -p ignore_error_asterisk True
@@ -67,9 +67,16 @@ papermill notebook/exp049.ipynb notebook/executed/exp049-1.ipynb -p debug False
 # python3 ./scripts/train_gnn.py exp047 exp047-5 -graph_pooling mean -augmented_feature morgan maccs desc -ignore_error_asterisk 
 # python3 ./scripts/train_gnn.py exp047 exp047-6 -graph_pooling mean -ignore_error_asterisk 
 # python3 ./scripts/train_gnn.py exp047 exp047-7 -graph_pooling mean -is_trimmer_cyclic -ignore_error_asterisk 
-papermill notebook/exp048.ipynb notebook/executed/exp048-1.ipynb -p debug False -p notes "lgb control" -p exp exp048-1 -p ignore_3D False -p ignore_3d_stats True
-papermill notebook/exp048.ipynb notebook/executed/exp048-2.ipynb -p debug False -p notes "use 3d stats" -p exp exp048-2 -p ignore_3D False -p ignore_3d_stats False
-papermill notebook/exp048.ipynb notebook/executed/exp048-3.ipynb -p debug False -p notes "no use 3d" -p exp exp048-3 -p ignore_3D True -p ignore_3d_stats True
+# papermill notebook/exp048.ipynb notebook/executed/exp048-1.ipynb -p debug False -p notes "lgb control" -p exp exp048-1 -p ignore_3D False -p ignore_3d_stats True
+# papermill notebook/exp048.ipynb notebook/executed/exp048-2.ipynb -p debug False -p notes "use 3d stats" -p exp exp048-2 -p ignore_3D False -p ignore_3d_stats False
+# papermill notebook/exp048.ipynb notebook/executed/exp048-3.ipynb -p debug False -p notes "no use 3d" -p exp exp048-3 -p ignore_3D True -p ignore_3d_stats True
 
-python3 ./scripts/train_lgb.py exp046 exp046 
-python3 ./scripts/train_lgb.py exp048 exp048
+# python3 ./scripts/train_lgb.py exp046 exp046 
+# python3 ./scripts/train_lgb.py exp048 exp048
+
+papermill notebook/exp050.ipynb notebook/executed/exp050-1.ipynb -p debug False -p exp exp050-1 -p notes "主鎖の情報追加" -p select_feature True 
+papermill notebook/exp050.ipynb notebook/executed/exp050-2.ipynb -p debug False -p notes "主鎖の情報追加&特徴量全部" -p select_feature False -p data_exp exp050-1 
+
+papermill notebook/exp048.ipynb notebook/executed/exp048-4.ipynb -p debug False -p notes "lgb control & 特徴量全部" -p exp exp048-4 -p ignore_3D False -p ignore_3d_stats True -p select_feature False -p data_exp exp048-1
+papermill notebook/exp048.ipynb notebook/executed/exp048-5.ipynb -p debug False -p notes "use 3d stats & 特徴量全部" -p exp exp048-5 -p ignore_3D False -p ignore_3d_stats False -p select_feature False -p data_exp exp048-2
+papermill notebook/exp048.ipynb notebook/executed/exp048-6.ipynb -p debug False -p notes "no use 3d & 特徴量全部" -p exp exp048-6 -p ignore_3D True -p ignore_3d_stats True -p select_feature False -p data_exp exp048-3
