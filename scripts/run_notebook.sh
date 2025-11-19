@@ -74,9 +74,17 @@
 # python3 ./scripts/train_lgb.py exp046 exp046 
 # python3 ./scripts/train_lgb.py exp048 exp048
 
-papermill notebook/exp050.ipynb notebook/executed/exp050-1.ipynb -p debug False -p exp exp050-1 -p notes "主鎖の情報追加" -p select_feature True 
-papermill notebook/exp050.ipynb notebook/executed/exp050-2.ipynb -p debug False -p notes "主鎖の情報追加&特徴量全部" -p select_feature False -p data_exp exp050-1 
+# papermill notebook/exp050.ipynb notebook/executed/exp050-1.ipynb -p debug False -p exp exp050-1 -p notes "主鎖の情報追加" -p select_feature True 
+# papermill notebook/exp050.ipynb notebook/executed/exp050-2.ipynb -p debug False -p notes "主鎖の情報追加&特徴量全部" -p select_feature False -p data_exp exp050-1 
+# 
+# papermill notebook/exp048.ipynb notebook/executed/exp048-4.ipynb -p debug False -p notes "lgb control & 特徴量全部" -p exp exp048-4 -p ignore_3D False -p ignore_3d_stats True -p select_feature False -p data_exp exp048-1
+# papermill notebook/exp048.ipynb notebook/executed/exp048-5.ipynb -p debug False -p notes "use 3d stats & 特徴量全部" -p exp exp048-5 -p ignore_3D False -p ignore_3d_stats False -p select_feature False -p data_exp exp048-2
+# papermill notebook/exp048.ipynb notebook/executed/exp048-6.ipynb -p debug False -p notes "no use 3d & 特徴量全部" -p exp exp048-6 -p ignore_3D True -p ignore_3d_stats True -p select_feature False -p data_exp exp048-3
+#
 
-papermill notebook/exp048.ipynb notebook/executed/exp048-4.ipynb -p debug False -p notes "lgb control & 特徴量全部" -p exp exp048-4 -p ignore_3D False -p ignore_3d_stats True -p select_feature False -p data_exp exp048-1
-papermill notebook/exp048.ipynb notebook/executed/exp048-5.ipynb -p debug False -p notes "use 3d stats & 特徴量全部" -p exp exp048-5 -p ignore_3D False -p ignore_3d_stats False -p select_feature False -p data_exp exp048-2
-papermill notebook/exp048.ipynb notebook/executed/exp048-6.ipynb -p debug False -p notes "no use 3d & 特徴量全部" -p exp exp048-6 -p ignore_3D True -p ignore_3d_stats True -p select_feature False -p data_exp exp048-3
+# papermill notebook/exp053.ipynb notebook/executed/exp053.ipynb -p debug False -p exp exp053 -p remove_asterisk True -p ignore_3D True -p ignore_3d_stats TRUE
+# papermill notebook/exp054.ipynb notebook/executed/exp054-1.ipynb -p debug False -p exp exp054-1 -p data_exp exp054-1 -p remove_asterisk False -p ignore_3D True -p ignore_3d_stats TRUE -p notes "主鎖の情報追加、特徴量名一意化"
+# papermill notebook/exp054.ipynb notebook/executed/exp054-2.ipynb -p debug False -p exp exp054-2 -p data_exp exp054-2 -p remove_asterisk True -p ignore_3D True -p ignore_3d_stats TRUE -p notes "主鎖の情報追加、特徴量名一意化,  アスタリスク除去"
+# papermill notebook/exp055.ipynb notebook/executed/exp055-1.ipynb -p debug False -p exp exp055-1 -p data_exp exp055-1 -p remove_asterisk False -p ignore_3D True -p ignore_3d_stats TRUE -p notes "主鎖取り出しに失敗したら空"
+papermill notebook/exp055.ipynb notebook/executed/exp055-2.ipynb -p debug False -p exp exp055-2 -p data_exp exp055-1 -p remove_asterisk False -p ignore_3D True -p ignore_3d_stats TRUE -p notes "主鎖取り出しに失敗したら空" -p feature_top_ratio 0.2
+papermill notebook/exp055.ipynb notebook/executed/exp055-3.ipynb -p debug False -p exp exp055-3 -p data_exp exp055-1 -p remove_asterisk False -p ignore_3D True -p ignore_3d_stats TRUE -p notes "主鎖取り出しに失敗したら空" -p feature_top_ratio 0.1
